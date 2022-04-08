@@ -22,17 +22,20 @@ describe('tests for duel duo', () => {
     })
     
     test('clicking the Draw button displays the div with id = choices', async () => {
-        const draw = await driver.findElement(By.id('choices')).isDisplayed
         await driver.findElement(By.id('draw')).click()
-        driver.sleep(1000)
-        expect(draw).toBeTruthy()
+        driver.sleep(2000)
+        const choicesDiv = await driver.findElement(By.id('choices'))
+        const displayed = await choicesDiv.isDisplayed()
+        expect(displayed).toBeTruthy
     })
     
     test('add to duo button displays the div with id = player-duo', async () => {
+        await driver.findElement(By.id('draw')).click()
+        driver.sleep(2000)
         const atd = await driver.findElement(By.id('player-duo')).isDisplayed
         await driver.findElement(By.css('.bot-btn')).click()
-        driver.sleep(1000)
+        driver.sleep(2000)
         expect(atd).toBeTruthy()
     })
-    
+
 })

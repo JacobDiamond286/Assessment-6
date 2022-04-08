@@ -6,6 +6,16 @@ const {shuffleArray} = require('./utils')
 
 app.use(express.json())
 
+let Rollbar = require('rollbar')
+let rollbar = new Rollbar({
+    accessToken: '6f58c3cb96594442a7944c6b00b94a30',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    captureIp: true
+}) 
+
+rollbar.info('welcome')
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'))
 })
@@ -18,8 +28,10 @@ app.get('/js', (req, res) => {
 
 app.get('/api/robots', (req, res) => {
     try {
-        res.status(200).send(botsArr)
+        rollbar.info('someone accessed all bots')
+        res.status(200).send(bots)
     } catch (error) {
+        rollbar.critical('someone tried getting bots but unsuccessful')
         console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
     }
